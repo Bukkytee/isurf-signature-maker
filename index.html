@@ -85,7 +85,7 @@ function build(forPreview){
   var h='<table cellpadding="0" cellspacing="0" border="0" width="'+(mobile?320:520)+'" style="width:'+(mobile?320:520)+'px;border-collapse:collapse;'+F+'color:#1D1F3E;"><tr>';
   h+='<td valign="'+(mobile?'top':'middle')+'" width="'+logoWidth+'" style="width:'+logoWidth+'px;padding:'+(mobile?'0 0 12px 0':'0')+';"><a href="https://www.isurfglobal.com" target="_blank" style="text-decoration:none;border:0;"><img src="'+ph+'" alt="iSurf Global Services" width="'+logoWidth+'" height="'+logoHeight+'" style="display:block;width:'+logoWidth+'px;height:'+logoHeight+'px;border:0;outline:none;" /></a></td>';
   if(mobile) h+='</tr><tr>';
-  h+='<td valign="middle" style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;'+F+'">';
+  h+='<td valign="middle" style="padding:'+(mobile?'0 0 0 24px':'0')+';"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;'+F+'">';
   h+='<tr><td style="font-size:20px;line-height:24px;font-weight:bold;color:#1D1F3E;padding:0;">'+esc(name)+'</td></tr>';
   if(title) h+='<tr><td style="padding:7px 0 14px 0;"><img src="'+tag.url+'" alt="'+esc(title)+'" width="'+tag.w+'" height="'+H+'" style="display:block;width:'+tag.w+'px;height:'+H+'px;border:0;" /></td></tr>';
   else h+='<tr><td style="padding:0 0 14px 0;font-size:1px;line-height:7px;">&nbsp;</td></tr>';
