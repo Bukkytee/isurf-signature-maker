@@ -27,7 +27,7 @@ li{margin-bottom:8px}
 .note{font-size:13px;color:#4A4D68;margin-top:10px}
 </style></head><body><div class="wrap">
 <h1>iSurf signature maker</h1>
-<p>Fill in the person's details. The signature below updates by itself and always keeps the same design, so every colleague's signature looks identical.</p>
+<p>Fill in the person's details and choose a desktop or mobile layout. The signature below updates automatically.</p>
 <div class="card"><div class="grid">
 <div class="full"><label for="name">Full name</label><input id="name" type="text" placeholder="e.g. Jane Doe" autocomplete="off"></div>
 <div class="full"><label for="title">Job title</label><input id="title" type="text" placeholder="e.g. IT Specialist" maxlength="40" autocomplete="off"></div>
@@ -38,6 +38,8 @@ Lekki-Epe Expressway, Lekki, Lagos</textarea></div>
 <select id="bg"><option value="white">White (smoothest on normal white emails)</option><option value="clear">None (no white box on dark screens)</option></select></div>
 <div><label for="loop">Logo animation</label>
 <select id="loop"><option value="0">Loops forever</option><option value="1">Plays twice, then stops on the logo</option></select></div>
+<div><label for="layout">Signature layout</label>
+<select id="layout"><option value="desktop">Desktop</option><option value="mobile">Mobile</option></select></div>
 </div>
 <div class="prev"><div id="sig"></div></div>
 <p style="margin-top:14px">
@@ -51,7 +53,7 @@ Lekki-Epe Expressway, Lekki, Lagos</textarea></div>
 <li>Click <strong>2. Copy signature</strong>.</li>
 <li>In Outlook go to <strong>File, Options, Mail, Signatures</strong>. Choose the signature, click inside the editing box, press <strong>Ctrl+A</strong> then <strong>Delete</strong>, then press <strong>Ctrl+V</strong>. The whole signature appears, with a still picture of the logo on the left.</li>
 <li>Click the still logo once and press <strong>Delete</strong>. The empty spot stays, with the cursor blinking in it.</li>
-<li>Use the Insert Picture button in the signature box and choose the downloaded GIF. It arrives much bigger than needed because it is sharp at twice the size. Right-click it, choose <strong>Size and Position</strong>, tick <strong>Lock aspect ratio</strong>, and type <strong>230 px</strong> as the width (the height becomes 199 px by itself).</li>
+<li>Use the Insert Picture button in the signature box and choose the downloaded GIF. It arrives much bigger than needed because it is sharp at twice the size. Right-click it, choose <strong>Size and Position</strong>, tick <strong>Lock aspect ratio</strong>, and type <strong>230 px</strong> for the desktop layout or <strong>140 px</strong> for the mobile layout as the width (the height adjusts automatically).</li>
 <li>Click <strong>OK</strong> and send yourself a test email.</li>
 </ol>
 <p class="note">Please do not retype the name, title or phone inside Outlook's box. That is what changes the fonts and spacing. Change them here and copy again.</p></div>
@@ -79,8 +81,10 @@ function build(forPreview){
   var tel=phone.replace(/[^0-9+]/g,'');
   var tag=tagImage(title),ph=A['ph'+$('bg').value];
   var F="font-family:'Segoe UI',Helvetica,Arial,sans-serif;";
-  var h='<table cellpadding="0" cellspacing="0" border="0" width="520" style="width:520px;border-collapse:collapse;'+F+'color:#1D1F3E;"><tr>';
-  h+='<td valign="middle" width="230" style="width:230px;padding:0;"><a href="https://www.isurfglobal.com" target="_blank" style="text-decoration:none;border:0;"><img src="'+ph+'" alt="iSurf Global Services" width="230" height="199" style="display:block;width:230px;height:199px;border:0;outline:none;" /></a></td>';
+  var mobile=$('layout').value==='mobile',logoWidth=mobile?140:230,logoHeight=mobile?121:199;
+  var h='<table cellpadding="0" cellspacing="0" border="0" width="'+(mobile?320:520)+'" style="width:'+(mobile?320:520)+'px;border-collapse:collapse;'+F+'color:#1D1F3E;"><tr>';
+  h+='<td valign="'+(mobile?'top':'middle')+'" width="'+logoWidth+'" style="width:'+logoWidth+'px;padding:'+(mobile?'0 0 12px 0':'0')+';"><a href="https://www.isurfglobal.com" target="_blank" style="text-decoration:none;border:0;"><img src="'+ph+'" alt="iSurf Global Services" width="'+logoWidth+'" height="'+logoHeight+'" style="display:block;width:'+logoWidth+'px;height:'+logoHeight+'px;border:0;outline:none;" /></a></td>';
+  if(mobile) h+='</tr><tr>';
   h+='<td valign="middle" style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;'+F+'">';
   h+='<tr><td style="font-size:20px;line-height:24px;font-weight:bold;color:#1D1F3E;padding:0;">'+esc(name)+'</td></tr>';
   if(title) h+='<tr><td style="padding:7px 0 14px 0;"><img src="'+tag.url+'" alt="'+esc(title)+'" width="'+tag.w+'" height="'+H+'" style="display:block;width:'+tag.w+'px;height:'+H+'px;border:0;" /></td></tr>';
@@ -92,7 +96,7 @@ function build(forPreview){
   return h;
 }
 function refresh(){ $('sig').innerHTML=build(true); }
-['name','title','phone','addr','bg','loop'].forEach(function(id){$(id).addEventListener('input',refresh);$(id).addEventListener('change',refresh);});
+['name','title','phone','addr','bg','loop','layout'].forEach(function(id){$(id).addEventListener('input',refresh);$(id).addEventListener('change',refresh);});
 function say(id,txt,ok){var m=$(id);m.style.color=ok?'#0b7a3b':'#b3261e';m.textContent=txt;}
 $('copy').addEventListener('click',function(){
   if(!$('name').value.trim()){say('msg','Please type the full name first.',false);$('name').focus();return;}
